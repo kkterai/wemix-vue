@@ -10,3 +10,15 @@ const securedAxiosInstance = axios.create({
   }
 })
 
+securedAxiosInstance.interceptors.request.use(config => {
+    const method = config.method.toUpperCase()
+    if (method !== 'OPTIONS' && method !== 'GET') {
+      config.headers = {
+        ...config.headers,
+        'X-CSRF-TOKEN': localStorage.csrf
+      }
+    }
+    return config
+  })
+
+  export { securedAxiosInstance }
